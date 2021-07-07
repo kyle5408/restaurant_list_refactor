@@ -73,9 +73,3 @@ header {
     font-size: 2rem;
   }
 }
-
-.file::before {
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            content: "\f15b";
-        }

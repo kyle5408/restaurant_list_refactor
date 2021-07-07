@@ -21,7 +21,6 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
 })
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  console.log(keyword)
   const searchResult = restaurants.results.filter(restaurant =>
     restaurant.name.toUpperCase().includes(keyword.toUpperCase())
     || restaurant.category.toUpperCase().includes(keyword.toUpperCase())
