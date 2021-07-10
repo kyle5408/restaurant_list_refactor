@@ -2,14 +2,29 @@
 const express = require('express')
 const restaurants = require('./restaurant.json')
 const app = express()
-const port = 3000
+const port = 3011
 const exhbs = require('express-handlebars')
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://localhost/restaruant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 app.engine('handlebars', exhbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
+// ------------ 設定db-------------
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error!')
+})
 
-// ------------- 回應-------------
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
+
+
+
+
+// ------------- 路由&回應-------------
 app.get('/', (req, res) => {
   const restaurant = restaurants.results
   res.render('index', { restaurants: restaurant })
@@ -26,6 +41,12 @@ app.get('/search', (req, res) => {
     || restaurant.category.toUpperCase().includes(keyword.toUpperCase())
   )
   res.render('index', { restaurants: searchResult, keyword: keyword })
+})
+
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+  const restaurant_id = req.params.restaurant_id
+  const restaurant = restaurants.results.find(restaurant => restaurant.id === Number(restaurant_id))
+  res.render('edit', { restaurant: restaurant })
 })
 
 
