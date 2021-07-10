@@ -1,18 +1,17 @@
 <link rel="stylesheet" href="/stylesheets/showPage.css">
 
-<h1 class="mb-1 restaurant-show-title">編輯</h1>
+<h1 class="mb-1 restaurant-show-title">新建</h1>
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-10 mx-auto">
 
-      <form action="/restaurants/{{ restaurant._id }}/edit" method="POST">
+      <form action="/restaurants" method="POST">
         <p class="mb-1">
           <span class="text-secondary">
             <i class="fas fa-utensils pr-2"></i>
             餐廳名稱：
           </span>
-          <input type="text" placeholder="輸入餐廳名稱..." name="name" class="form-control" min="1" max="25"
-            value='{{ restaurant.name }}'>
+          <input type="text" placeholder="輸入餐廳名稱..." name="name" class="form-control" min="1" max="25">
         </p>
 
         <p class="mb-1">
@@ -20,8 +19,7 @@
             <i class="fas fa-utensils pr-2"></i>
             餐廳英文名稱：
           </span>
-          <input type="text" placeholder="輸入餐廳英文名稱..." name="name_en" class="form-control" min="1" max="25"
-            value="{{restaurant.name_en}}">
+          <input type="text" placeholder="輸入餐廳英文名稱..." name="name_en" class="form-control" min="1" max="25">
         </p>
 
         <p class="mb-1">
@@ -29,8 +27,7 @@
             <i class="fas fa-utensils pr-2"></i>
             類別：
           </span>
-          <input type="text" placeholder="輸入料理類別..." name="category" class="form-control" min="1" max="25"
-            value="{{restaurant.category}}">
+          <input type="text" placeholder="輸入料理類別..." name="category" class="form-control" min="1" max="25">
         </p>
 
         <p class="mb-1">
@@ -38,8 +35,7 @@
             <i class="fas fa-map-marker-alt pr-2"></i>
             地址：
           </span>
-          <input type="text" placeholder="輸入地址..." name="location" class="form-control" min="1" max="25"
-            value="{{restaurant.location}}">
+          <input type="text" placeholder="輸入地址..." name="location" class="form-control" min="1" max="25">
         </p>
 
         <p class="mb-1">
@@ -47,8 +43,7 @@
             <i class="fas fa-location-arrow pr-2 fa-xs"></i>
             Google地圖網址：
           </span>
-          <input type="text" placeholder="輸入Google地圖網址..." name="google_map" class="form-control" min="1" max="500"
-            value="{{restaurant.google_map}}">
+          <input type="text" placeholder="輸入Google地圖網址..." name="google_map" class="form-control" min="1" max="500">
         </p>
 
         <p class="mb-1">
@@ -56,8 +51,7 @@
             <i class="fas fa-mobile-alt pr-2"></i>
             電話：
           </span>
-          <input type="text" placeholder="輸入電話號碼..." name="phone" class="form-control" min="1" max="500"
-            value="{{restaurant.phone}}">
+          <input type="text" placeholder="輸入電話號碼..." name="phone" class="form-control" min="1" max="500">
         </p>
 
 
@@ -65,26 +59,21 @@
           <span class="text-secondary">
             <li>評分：</li>
           </span>
-          <input type="number" placeholder="輸入評分..." name="rating" class="form-control" min="1" max="5"
-            value="{{restaurant.rating}}">
+          <input type="number" placeholder="輸入評分..." name="rating" class="form-control" min="1" max="5">
         </p>
 
         <p class="mb-1">
           <span class="text-secondary">
             <li>餐廳敘述：</li>
           </span>
-          <textarea type="text" placeholder="輸入餐廳描述..." name="description" class="form-control" rows="5"
-            value="{{restaurant.description}}">{{restaurant.description}}</textarea>
+          <textarea type="text" placeholder="輸入餐廳描述..." name="description" class="form-control" rows="5"></textarea>
         </p>
 
         <p class="mb-1">
           <span class="text-secondary">
             <li>圖片網址：</li>
-            <input type="text" placeholder="輸入圖片網址..." name="image" class="form-control" min="1" max="500"
-              value="{{restaurant.image}}">
+            <input type="text" placeholder="輸入圖片網址..." name="image" class="form-control" min="1" max="500">
           </span>
-          <img class="rounded mx-auto d-block mb-4 w-100" src="{{restaurant.image}}" alt="無法顯示圖片"
-            style="max-width: 600px;">
         </p>
     </div>
   </div>

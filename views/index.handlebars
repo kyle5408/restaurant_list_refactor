@@ -16,7 +16,7 @@
       </form>
     </div>
     <div class="d-flex justify-content-end">
-      <a href="">
+      <a href="/restaurants/new">
         <button type="button" class="btn btn-success btn-sm mt-1">+ 新增餐廳</button>
       </a>
     </div>
@@ -46,20 +46,20 @@
               {{this.rating}}
               <i class="fas fa-star fa-xs"></i>
           </div>
-        </div>
+          <div style="background-color:#FCFCFC;">
+            <div class="d-flex justify-content-end mb-3" role="group" aria-label="Basic outlined example">
+              <a href="/restaurants/{{this._id}}/edit">
+                <button type="button" class="btn btn-light">編輯</button>
+              </a>
+              <a href="/restaurants/{{this._id}}">
+                <button type="button" class="btn btn-light">詳細資料</button>
+              </a>
+              <form action="/restaurants/{{ this._id }}/delete" method="POST">
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </div>
 
-        <div class="d-flex justify-content-end mb-3" role="group" aria-label="Basic outlined example">
-          <a href="/restaurants/{{this.id}}/edit">
-            <button type="button" class="btn btn-light">編輯</button>
-          </a>
-
-          <a href="/restaurants/{{this.id}}">
-            <button type="button" class="btn btn-light">詳細資料</button>
-          </a>
-          <form action="" method="POST">
-            <button type="button" class="btn btn-outline-danger">Delete</button>
-
-          </form>
 
         </div>
         {{/each}}

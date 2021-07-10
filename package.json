@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.2",
+    "mongoose": "^5.13.2"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
@@ -10,11 +16,5 @@
     "seed": "node models/seeds/restaurantSeeder.js"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "express-handlebars": "^5.3.2",
-    "handlebars": "^4.7.7",
-    "mongoose": "^5.13.2"
-  }
+  "license": "ISC"
 }
