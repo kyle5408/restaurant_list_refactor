@@ -3,7 +3,7 @@ const express = require('express')
 // const restaurants = require('./restaurant.json')
 const Restaurant = require('./models/restaurant')
 const app = express()
-const port = 3001
+const port = 3000
 const bodyParser = require('body-parser')
 const exhbs = require('express-handlebars')
 const mongoose = require('mongoose')
@@ -97,7 +97,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 //create
-app.get('/restaurants/new', (req, res) => {
+app.get('/restaurant/new', (req, res) => {
   return res.render('new')
 })
 
@@ -120,7 +120,7 @@ app.post('/restaurants', (req, res) => {
 app.post('/restaurants/:id/delete', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
-    .then(restaurant => estaurant.remove())
+    .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
