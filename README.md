@@ -14,14 +14,14 @@
 - Install npm `npm install`
 - Seed restaurant info using `npm run seed`
 - Start the server using `npm run dev`
-- Navigate to localhost:3000
+- Navigate to localhost:3001
 
 ## Prerequisites
 
 - body-parser 1.19.0
-- bootstrap 4.3
 - express 4.17.1
 - express-handlebars 5.3.2
-- jquery 3.3.1
 - mongoose 5.13.2
 - popper 2.9.1
+- bootstrap 4.3
+- jquery 3.3.1
