@@ -7,7 +7,6 @@ const port = 3000
 const bodyParser = require('body-parser')
 const exhbs = require('express-handlebars')
 const mongoose = require('mongoose')
-const restaurant = require('./models/restaurant')
 mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 app.engine('handlebars', exhbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -37,25 +36,35 @@ app.get('/', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+//search
+app.get('/restaurants/searches', (req, res) => {
+  //使用mongoose內reg模糊查詢功能
+  const keyword = RegExp(req.query.keyword, 'i') //i為不分大小寫
+  return Restaurant.find({ $or: [{ 'name': { $regex: keyword } }, { 'category': { $regex: keyword } }] })
+    .lean()
+    .then(restaurant => {
+      res.render('index', { restaurants: restaurant, keyword: req.query.keyword })
+    })
+    .catch(error => console.log(error))
+})
+
+
+
 //index
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .lean()
-    .then(restaurant => res.render('show', { restaurant: restaurant }))
+    .then(restaurant => {
+      res.render('show', { restaurant: restaurant })
+    })
     .catch(error => console.log(error))
 })
 
-//search
-app.get('/search', (req, res) => {
-  //使用mongoose內reg模糊查詢功能
-  const keyword = RegExp(req.query.keyword, 'i') //i為不分大小寫
-  return Restaurant.find({ $or: [{ 'name': { $regex: keyword } }, { 'category': { $regex: keyword } }] })
-    .lean()
-    .then(restaurant =>
-      res.render('index', { restaurants: restaurant, keyword: req.query.keyword }))
-    .catch(error => console.log(error))
-})
 
 //edit
 app.get('/restaurants/:id/edit', (req, res) => {
@@ -68,16 +77,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
 
 app.post('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
-  const name = req.body.name
-  const name_en = req.body.name_en
-  const category = req.body.category
-  const image = req.body.image
-  const location = req.body.location
-  const phone = req.body.phone
-  const google_map = req.body.google_map
-  const rating = req.body.rating
-  const description = req.body.description
-
+  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
 
   return Restaurant.findById(id)
     .then(restaurant => {
@@ -97,20 +97,10 @@ app.post('/restaurants/:id/edit', (req, res) => {
 })
 
 //create
-app.get('/restaurant/new', (req, res) => {
-  return res.render('new')
-})
+
 
 app.post('/restaurants', (req, res) => {
-  const name = req.body.name
-  const name_en = req.body.name_en
-  const category = req.body.category
-  const image = req.body.image
-  const location = req.body.location
-  const phone = req.body.phone
-  const google_map = req.body.google_map
-  const rating = req.body.rating
-  const description = req.body.description
+  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
   return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
@@ -120,7 +110,7 @@ app.post('/restaurants', (req, res) => {
 app.post('/restaurants/:id/delete', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
-    .then(restaurant => restaurant.remove())
+    .then(restaurant => { restaurant.remove() })
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
