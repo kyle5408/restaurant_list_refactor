@@ -14,7 +14,7 @@
 - Install npm `npm install`
 - Seed restaurant info using `npm run seed`
 - Start the server using `npm run dev`
-- Navigate to localhost:3001
+- Navigate to localhost:3000
 
 ## Prerequisites
 
