@@ -3,24 +3,17 @@ const express = require('express')
 // const restaurants = require('./restaurant.json')
 const Restaurant = require('./models/restaurant')
 const app = express()
-const port = 3000
+const port = 3001
 const bodyParser = require('body-parser')
 const exhbs = require('express-handlebars')
-const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
+require('./config/mongoose')
+
+
+
 app.engine('handlebars', exhbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
-// ------------ 設定db-------------
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('mongodb error!')
-})
-
-db.once('open', () => {
-  console.log('mongodb connected!')
-})
 
 // ------------ 設定使用-------------
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -31,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
   Restaurant.find()
     .lean()
+    .sort({ _id: 'asc' })
     .then(restaurant => res.render('index', { restaurants: restaurant }))
 
     .catch(error => console.log(error))
