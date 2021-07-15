@@ -5,7 +5,6 @@ const port = 3000
 const exhbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
-const isEqual = require('./public/javascripts/handlebarsHelper')
 require('./config/mongoose')
 
 

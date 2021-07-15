@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
-const sortList = require('../../config/sort.json')
 
 
 router.get('/', (req, res) => {
@@ -11,7 +10,7 @@ router.get('/', (req, res) => {
       .lean()
       .sort({ name: 'asc' })
       .then(restaurant => {
-        res.render('index', { restaurants: restaurant, sortList: sortList, asc: sort })
+        res.render('index', { restaurants: restaurant, asc: sort })
       })
       .catch(error => console.log(error))
     return
@@ -22,7 +21,7 @@ router.get('/', (req, res) => {
       .lean()
       .sort({ name: 'desc' })
       .then(restaurant => {
-        res.render('index', { restaurants: restaurant, sortList: sortList, desc: sort })
+        res.render('index', { restaurants: restaurant, desc: sort })
       })
       .catch(error => console.log(error))
     return
@@ -33,7 +32,7 @@ router.get('/', (req, res) => {
       .lean()
       .sort({ category: 'asc' })
       .then(restaurant => {
-        res.render('index', { restaurants: restaurant, sortList: sortList, category: sort })
+        res.render('index', { restaurants: restaurant, category: sort })
       })
       .catch(error => console.log(error))
     return
@@ -44,7 +43,7 @@ router.get('/', (req, res) => {
       .lean()
       .sort({ location: 'asc' })
       .then(restaurant => {
-        res.render('index', { restaurants: restaurant, sortList: sortList, location: sort })
+        res.render('index', { restaurants: restaurant, location: sort })
       })
       .catch(error => console.log(error))
     return
@@ -54,7 +53,7 @@ router.get('/', (req, res) => {
     .lean()
     .sort({ _id: 'asc' })
     .then(restaurant => {
-      res.render('index', { restaurants: restaurant, sortList: sortList, sort: sort })
+      res.render('index', { restaurants: restaurant, sort: sort })
     })
     .catch(error => console.log(error))
 })
