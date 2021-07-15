@@ -1,7 +1,7 @@
 // ------------- 基本設定-------------
 const express = require('express')
 const app = express()
-const port = 3111
+const port = 3000
 const exhbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
