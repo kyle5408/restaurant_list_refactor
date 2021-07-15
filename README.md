@@ -1,7 +1,6 @@
 # restaurant_list w/ CRUD
 
-![](https://i.imgur.com/8wkZHTp.jpg)
-![](https://i.imgur.com/oDtoWEV.jpg)
+![](http://i.imgur.com/5Q8cVAo.jpg)
 
 ## Features
 
