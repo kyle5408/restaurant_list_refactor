@@ -6,9 +6,18 @@ const methodOverride = require('method-override')
 
 router.use(methodOverride('_method'))
 
+//create
 router.get('/new', (req, res) => {
   return res.render('new')
 })
+
+router.post('/', (req, res) => {
+  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
+  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 
 //search
 router.get('/searches', (req, res) => {
@@ -17,14 +26,16 @@ router.get('/searches', (req, res) => {
   return Restaurant.find({ $or: [{ 'name': { $regex: keyword } }, { 'category': { $regex: keyword } }] })
     .lean()
     .then(restaurant => {
+      if (restaurant.length === 0) {
+        res.render('index', { restaurants: restaurant, errorMsg: '無符合搜尋結果' })
+        return
+      }
       res.render('index', { restaurants: restaurant, keyword: req.query.keyword })
     })
     .catch(error => console.log(error))
 })
 
-
-
-//index
+//detail
 router.get('/:id', (req, res) => {
   const id = req.params.id
   if (!ObjectId.isValid(id)) {
@@ -71,13 +82,7 @@ router.put('/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
-//create
-router.post('/', (req, res) => {
-  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
-  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
+
 
 //delete
 router.delete('/:id', (req, res) => {
@@ -92,5 +97,7 @@ router.delete('/:id', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+
+
 
 module.exports = router

@@ -13,15 +13,21 @@
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button">搜尋<i class="fas fa-search"></i></button>
           </div>
-          <select class="form-select ml-5 btn-outline-dark" aria-label="Default select example" id="sort">
-            <option selected>排序方式</option>
-            <option value="asc">A→Z</option>
-            <option value="desc">Z→A</option>
-            <option value="category">類別</option>
-            <option value="location">地區</option>
-          </select>
-        </div>
       </form>
+
+
+
+      <form action="/">
+        <select class="form-select ml-5 btn-outline-dark" name="sort" id="sort">
+          <option value="default" selected>排序方式</option>
+          <option value="asc" {{#if asc }}selected{{/if}}>A→Z</option>
+          <option value="desc" {{#if desc }}selected{{/if}}>Z→A</option>
+          <option value="category" {{#if category }}selected{{/if}}>類別</option>
+          <option value="location" {{#if location }} selected{{/if}}>地區</option>
+        </select>
+        <button type="submit">Submit</button>
+      </form>
+
     </div>
   </div>
 
@@ -75,6 +81,3 @@
     {{/each}}
   </div>
 </div>
-
-
-<script src="/javascript/index.js"></script>
