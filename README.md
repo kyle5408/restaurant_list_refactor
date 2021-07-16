@@ -1,12 +1,12 @@
 # restaurant_list w/ CRUD
 
-![](https://i.imgur.com/8wkZHTp.jpg)
-![](https://i.imgur.com/oDtoWEV.jpg)
+![](http://i.imgur.com/5Q8cVAo.jpg)
 
 ## Features
 
 - 可模糊搜尋餐廳名稱及種類
 - 可新建、編輯、刪除餐廳資訊
+- 可進行條件排序
 
 ## Installation
 
