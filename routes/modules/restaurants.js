@@ -55,6 +55,11 @@ router.get('/:id', (req, res) => {
 //edit
 router.get('/:id/edit', (req, res) => {
   const id = req.params.id
+  if (!ObjectId.isValid(id)) {
+    return res.render('index', {
+      errorMsg: '讀取失敗:Not a valid id'
+    })
+  }
   return Restaurant.findById(id)
     .lean()
     .then(restaurant => res.render('edit', { restaurant: restaurant }))
@@ -64,6 +69,12 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', (req, res) => {
   const id = req.params.id
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
+
+  if (!ObjectId.isValid(id)) {
+    return res.render('index', {
+      errorMsg: '讀取失敗:Not a valid id'
+    })
+  }
 
   return Restaurant.findById(id)
     .then(restaurant => {
