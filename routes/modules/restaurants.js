@@ -3,6 +3,8 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 const ObjectId = require('mongoose').Types.ObjectId
 const methodOverride = require('method-override')
+// const { check } = require('express-validator')
+// const validationResult = require('express-validator').validationResult
 
 router.use(methodOverride('_method'))
 
@@ -66,32 +68,44 @@ router.get('/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-router.put('/:id', (req, res) => {
-  const id = req.params.id
-  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
 
-  if (!ObjectId.isValid(id)) {
-    return res.render('index', {
-      errorMsg: '讀取失敗:Not a valid id'
-    })
-  }
+  // , [
+  // check('phone', "需輸入電話號碼").isMobilePhone,
+  //   check('rating', "需輸入1~5間之數字").isNumeric
+  // ]
 
-  return Restaurant.findById(id)
-    .then(restaurant => {
-      restaurant.name = name
-      restaurant.name_en = name_en
-      restaurant.category = category
-      restaurant.image = image
-      restaurant.location = location
-      restaurant.phone = phone
-      restaurant.google_map = google_map
-      restaurant.rating = rating
-      restaurant.description = description
-      return restaurant.save()
-    })
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(error => console.log(error))
-})
+router.put('/:id'
+ , (req, res) => {
+    const errors = validationResult(req)
+    const id = req.params.id
+    const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
+
+    if (!ObjectId.isValid(id)) {
+      return res.render('index', {
+        errorMsg: '讀取失敗:Not a valid id'
+      })
+    // } else if (!errors.isEmpty()) {
+    //   return res.render('index', {
+    //     errorMsg: errors.array()
+    //   })
+    } else {
+      return Restaurant.findById(id)
+        .then(restaurant => {
+          restaurant.name = name
+          restaurant.name_en = name_en
+          restaurant.category = category
+          restaurant.image = image
+          restaurant.location = location
+          restaurant.phone = phone
+          restaurant.google_map = google_map
+          restaurant.rating = rating
+          restaurant.description = description
+          return restaurant.save()
+        })
+        .then(() => res.redirect(`/restaurants/${id}`))
+        .catch(error => console.log(error))
+    }
+  })
 
 
 
