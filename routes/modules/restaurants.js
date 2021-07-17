@@ -3,21 +3,38 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 const ObjectId = require('mongoose').Types.ObjectId
 const methodOverride = require('method-override')
-// const { check } = require('express-validator')
-// const validationResult = require('express-validator').validationResult
+const { buildCheckFunction } = require('express-validator')
+const checkParams = buildCheckFunction(['body', 'query', 'params'])
+const validationResult = require('express-validator').validationResult
 
 router.use(methodOverride('_method'))
+
 
 //create
 router.get('/new', (req, res) => {
   return res.render('new')
 })
 
-router.post('/', (req, res) => {
+router.post('/', [
+  checkParams('phone', '請輸入正確電話格式').isIMEI('## #### ####'),
+  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入3碼').isLength({ min: 3 }),
+], (req, res) => {
+  const errorsResult = validationResult(req)
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
-  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+  if (!errorsResult.isEmpty()) {
+    const errorMsg = []
+    errorsResult.errors.forEach(error =>
+      errorMsg.push(error.msg))
+    res.render('index', {
+      errorMsg: errorMsg
+    })
+    return
+  } else {
+    return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
+      .then(() => res.redirect('/'))
+      .catch(error =>
+        console.log(error))
+  }
 })
 
 
@@ -41,7 +58,8 @@ router.get('/searches', (req, res) => {
 router.get('/:id', (req, res) => {
   const id = req.params.id
   if (!ObjectId.isValid(id)) {
-    return res.render('index', {
+    console.log(validationResult(req))
+    res.render('index', {
       errorMsg: '讀取失敗:Not a valid id'
     })
   }
@@ -50,7 +68,9 @@ router.get('/:id', (req, res) => {
     .then(restaurant => {
       res.render('show', { restaurant: restaurant })
     })
-    .catch(error => console.log(error))
+    .catch(error => {
+      console.log(error)
+    })
 })
 
 
@@ -69,25 +89,25 @@ router.get('/:id/edit', (req, res) => {
 })
 
 
-  // , [
-  // check('phone', "需輸入電話號碼").isMobilePhone,
-  //   check('rating', "需輸入1~5間之數字").isNumeric
-  // ]
-
-router.put('/:id'
- , (req, res) => {
-    const errors = validationResult(req)
+router.put('/:id', [
+  checkParams('phone', '請輸入正確電話格式').isIMEI('## #### ####'),
+  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入3碼').isLength({ min: 3 }),
+]
+  , (req, res) => {
+    const errorsResult = validationResult(req)
     const id = req.params.id
     const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
 
     if (!ObjectId.isValid(id)) {
-      return res.render('index', {
-        errorMsg: '讀取失敗:Not a valid id'
+      return res.render('index', { errorMsg: '讀取失敗:Not a valid id' })
+    } else if (!errorsResult.isEmpty()) {
+      const errorMsg = []
+      errorsResult.errors.forEach(error =>
+        errorMsg.push(error.msg))
+      res.render('index', {
+        errorMsg: errorMsg
       })
-    // } else if (!errors.isEmpty()) {
-    //   return res.render('index', {
-    //     errorMsg: errors.array()
-    //   })
+      return
     } else {
       return Restaurant.findById(id)
         .then(restaurant => {
@@ -103,7 +123,10 @@ router.put('/:id'
           return restaurant.save()
         })
         .then(() => res.redirect(`/restaurants/${id}`))
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error)
+        })
+
     }
   })
 
