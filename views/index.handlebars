@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="/stylesheets/index.css">
 
 
+
 <!-- search bar -->
 <div class="container search-bar">
   <div class="search-bar-outer">
@@ -15,8 +16,6 @@
           </div>
       </form>
 
-
-
       <form action="/">
         <select class="form-select ml-5 btn-outline-dark" name="sort" id="sort">
           <option value="default" selected>排序方式</option>
@@ -27,11 +26,18 @@
         </select>
         <button type="submit">Submit</button>
       </form>
-
     </div>
   </div>
-
 </div>
+
+<div class="container text-right col-12">
+  <div class="col-10">
+    <a href="/restaurants/new">
+      <button type="button" class="btn btn-outline-dark btn-sm mt-1">+ 新增餐廳</button>
+    </a>
+  </div>
+</div>
+
 
 
 <!-- restaurant list -->
@@ -44,8 +50,6 @@
   </button>
 </div>
 {{/if}}
-
-
 <div class="container mt-3">
   <div class="row justify-content-center">
     {{#each restaurants}}
