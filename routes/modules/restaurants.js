@@ -16,10 +16,10 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', [
-  checkParams('phone', '請輸入正確電話格式').isIMEI('## #### ####'),
-  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入3碼').isLength({ min: 3 }),
+  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入1碼').isLength({ min: 1 }),
 ], (req, res) => {
   const errorsResult = validationResult(req)
+  const userId = req.user._id
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
   if (!errorsResult.isEmpty()) {
     const errorMsg = []
@@ -30,7 +30,7 @@ router.post('/', [
     })
     return
   } else {
-    return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
+    return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description, userId })
       .then(() => res.redirect('/'))
       .catch(error =>
         console.log(error))
@@ -56,14 +56,15 @@ router.get('/searches', (req, res) => {
 
 //detail
 router.get('/:id', (req, res) => {
-  const id = req.params.id
-  if (!ObjectId.isValid(id)) {
+  const userId = req.user._id
+  const _id = req.params.id
+  if (!ObjectId.isValid(_id)) {
     console.log(validationResult(req))
     res.render('index', {
       errorMsg: '讀取失敗:Not a valid id'
     })
   }
-  return Restaurant.findById(id)
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => {
       res.render('show', { restaurant: restaurant })
@@ -76,13 +77,14 @@ router.get('/:id', (req, res) => {
 
 //edit
 router.get('/:id/edit', (req, res) => {
-  const id = req.params.id
-  if (!ObjectId.isValid(id)) {
+  const userId = req.user._id
+  const _id = req.params.id
+  if (!ObjectId.isValid(_id)) {
     return res.render('index', {
       errorMsg: '讀取失敗:Not a valid id'
     })
   }
-  return Restaurant.findById(id)
+  return Restaurant.findOne({ _id, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant: restaurant }))
     .catch(error => console.log(error))
@@ -90,15 +92,15 @@ router.get('/:id/edit', (req, res) => {
 
 
 router.put('/:id', [
-  checkParams('phone', '請輸入正確電話格式').isIMEI('## #### ####'),
-  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入3碼').isLength({ min: 3 }),
+  checkParams('rating', '評分須介於1~5').isFloat({ min: 1, max: 5.0 }), checkParams('name', '餐廳名稱最短需輸入1碼').isLength({ min: 1 }),
 ]
   , (req, res) => {
     const errorsResult = validationResult(req)
-    const id = req.params.id
+    const userId = req.user._id
+    const _id = req.params.id
     const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
 
-    if (!ObjectId.isValid(id)) {
+    if (!ObjectId.isValid(_id)) {
       return res.render('index', { errorMsg: '讀取失敗:Not a valid id' })
     } else if (!errorsResult.isEmpty()) {
       const errorMsg = []
@@ -109,7 +111,7 @@ router.put('/:id', [
       })
       return
     } else {
-      return Restaurant.findById(id)
+      return Restaurant.findOne({ _id, userId })
         .then(restaurant => {
           restaurant.name = name
           restaurant.name_en = name_en
@@ -122,7 +124,7 @@ router.put('/:id', [
           restaurant.description = description
           return restaurant.save()
         })
-        .then(() => res.redirect(`/restaurants/${id}`))
+        .then(() => res.redirect(`/restaurants/${_id}`))
         .catch(error => {
           console.log(error)
         })
@@ -134,13 +136,14 @@ router.put('/:id', [
 
 //delete
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  if (!ObjectId.isValid(id)) {
+  const userId = req.user._id
+  const _id = req.params.id
+  if (!ObjectId.isValid(_id)) {
     return res.render('index', {
       errorMsg: '刪除失敗:Not a valid id'
     })
   }
-  return Restaurant.findById(id)
+  return Restaurant.findOne({ _id, userId })
     .then(restaurant => { restaurant.remove() })
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
