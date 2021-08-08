@@ -5,6 +5,7 @@ const port = 3000
 const exhbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
+const session = require('express-session')
 require('./config/mongoose')
 
 // ------------ 設定使用-------------
@@ -14,6 +15,11 @@ app.engine('handlebars', exhbs({
 app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
 
 // ------------- 路由&回應-------------
 app.use(routes)
