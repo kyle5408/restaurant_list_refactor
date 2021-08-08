@@ -6,6 +6,7 @@ const exhbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
 const session = require('express-session')
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 // ------------ 設定使用-------------
@@ -16,10 +17,11 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: 'ThisiSmYSecret',
   resave: false,
   saveUninitialized: true
 }))
+usePassport(app)
 
 // ------------- 路由&回應-------------
 app.use(routes)
