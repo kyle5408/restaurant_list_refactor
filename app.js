@@ -1,14 +1,18 @@
 // ------------- 基本設定-------------
 const express = require('express')
 const app = express()
-const port = 3000
 const exhbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
 const session = require('express-session')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+const port = process.env.PORT
 require('./config/mongoose')
+
 
 // ------------ 設定使用-------------
 app.engine('handlebars', exhbs({
